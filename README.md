@@ -42,13 +42,22 @@ device. The only network traffic after install is a one-way daily reminder push 
    home-screen apps on iOS).
 4. Complete the welcome setup. Done — the app now works with zero internet connection.
 
-## Turn on the daily notification (one time)
+## Turn on the daily notification (one time per phone)
 
 1. In the app: **Profile → Enable notifications** → allow.
 2. Tap **Copy subscription**.
 3. On GitHub: your repo → **Settings → Secrets and variables → Actions → New repository secret**.
    Name it `PUSH_SUBSCRIPTION`, paste, save.
 4. Test it: repo → **Actions → Daily Workout Notification → Run workflow**. Your phone should buzz.
+
+**Multiple phones** (family, friends using the same app): the secret accepts a JSON list — wrap the
+subscriptions in square brackets, separated by commas:
+
+```json
+[ {"endpoint":"...phone 1..."}, {"endpoint":"...phone 2..."} ]
+```
+
+Each phone gets the daily push. An expired phone never blocks the others.
 
 The send time is set in [.github/workflows/notify.yml](.github/workflows/notify.yml) (cron, UTC).
 Default is 11:00 UTC ≈ 7:00 AM Eastern.

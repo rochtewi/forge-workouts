@@ -123,8 +123,9 @@ export default function SettingsScreen({ profile, onProfileChange }: { profile: 
             ) : (
               <>
                 <p className="muted" style={{ marginBottom: 8 }}>
-                  ✅ Enabled on this phone. Final step: copy this subscription and add it as the
-                  <b> PUSH_SUBSCRIPTION</b> secret in your GitHub repository (Settings → Secrets → Actions).
+                  ✅ Enabled on this phone. Final step: copy this subscription into the
+                  <b> PUSH_SUBSCRIPTION</b> secret in the GitHub repository (Settings → Secrets → Actions).
+                  The secret can hold a JSON list — one entry per phone that wants the daily push.
                 </p>
                 <div className="code-box">{sub}</div>
                 <button className="btn btn-secondary" style={{ marginTop: 10 }} onClick={copySub}>
