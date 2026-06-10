@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { today } from '../db'
 import { completeDay, getDay, pushDay, refreshTargets, skipDay, swapBlock } from '../engine/scheduler'
-import { defFor, swapsFor } from '../data/library'
+import { defFor, hasSauna, swapsFor } from '../data/library'
 import { useToast } from '../components/useToast'
 import TimerOverlay from '../components/TimerOverlay'
 import type { Profile, ScheduledDay, WorkoutBlock } from '../types'
@@ -152,7 +152,7 @@ export default function TodayScreen({ profile }: { profile: Profile }) {
           {day.status === 'skipped' && <span className="pill pill-red">Skipped</span>}
           {pending && !isRest && <span className="pill pill-dim">{doneBlocks}/{day.blocks.length} exercises</span>}
           {day.deload && <span className="pill pill-dim">😴 Deload week</span>}
-          {day.sauna && <span className="pill pill-accent">🔥 Sauna {profile.saunaMinutes} min</span>}
+          {day.sauna && hasSauna() && <span className="pill pill-accent">🔥 Sauna {profile.saunaMinutes} min</span>}
         </div>
       </div>
 
@@ -173,7 +173,7 @@ export default function TodayScreen({ profile }: { profile: Profile }) {
           />
         ))}
 
-      {day.sauna && (
+      {day.sauna && hasSauna() && (
         <div className="sauna-row">
           <button className={`set-check ${day.saunaDone ? 'on' : ''}`} onClick={onSauna} disabled={!pending}>
             {day.saunaDone ? '✓' : ''}

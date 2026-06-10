@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { db, today } from '../db'
 import { getAllMetrics, summarize, type AllMetrics } from '../engine/metrics'
-import { availableExercises } from '../data/library'
+import { availableExercises, hasSauna } from '../data/library'
 import LineChart from '../components/LineChart'
 import MetricDetail, { type MetricKey } from './MetricDetail'
 import { useToast } from '../components/useToast'
@@ -104,10 +104,12 @@ export default function ProgressScreen({ profile }: { profile: Profile }) {
             )}
           </div>
         </button>
-        <button className="stat" onClick={() => setDetail('sauna')}>
-          <div className="stat-num">{metrics?.sauna.length ?? 0}</div>
-          <div className="stat-label">🧖 sauna sessions</div>
-        </button>
+        {hasSauna() && (
+          <button className="stat" onClick={() => setDetail('sauna')}>
+            <div className="stat-num">{metrics?.sauna.length ?? 0}</div>
+            <div className="stat-label">🧖 sauna sessions</div>
+          </button>
+        )}
         <button className="stat" onClick={() => setDetail('bodyweight')}>
           <div className="stat-num">{latestWeight ?? '—'}</div>
           <div className="stat-label">⚖️ body weight ({profile.unit})</div>

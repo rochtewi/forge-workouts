@@ -21,6 +21,11 @@ export function owned(): Equipment[] {
   return ownedEquipment
 }
 
+/** Sauna is modeled as equipment — every sauna feature hides without it. */
+export function hasSauna(): boolean {
+  return ownedEquipment.includes('sauna')
+}
+
 export function allExercises(): ExerciseDef[] {
   return [...EXERCISES, ...customExercises]
 }

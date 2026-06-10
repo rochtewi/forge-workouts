@@ -23,11 +23,12 @@ export const EQUIPMENT_LABELS: Record<Equipment, string> = {
   sled: 'Sled',
   'jump-rope': 'Jump rope',
   'medicine-ball': 'Medicine ball',
+  sauna: 'Dry sauna',
 }
 
 /** Equipment the user owns by default (from their original setup). */
 export const DEFAULT_EQUIPMENT: Equipment[] = [
-  'barbell', 'ez-bar', 'bench', 'bench-rack', 'dip-bars', 'pullup-bar', 'plates', 'bike', 'hill', 'bodyweight',
+  'barbell', 'ez-bar', 'bench', 'bench-rack', 'dip-bars', 'pullup-bar', 'plates', 'bike', 'hill', 'bodyweight', 'sauna',
 ]
 
 /**

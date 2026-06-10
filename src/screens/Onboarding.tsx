@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { db, today } from '../db'
+import { DEFAULT_EQUIPMENT } from '../data/exercises'
+import { loadLibrary } from '../data/library'
 import { ensureSchedule } from '../engine/scheduler'
 import type { Profile } from '../types'
 
@@ -8,6 +10,7 @@ export default function Onboarding({ onDone }: { onDone: () => void }) {
   const [weight, setWeight] = useState('')
   const [unit, setUnit] = useState<'lb' | 'kg'>('lb')
   const [days, setDays] = useState<5 | 6>(6)
+  const [hasSaunaAccess, setHasSaunaAccess] = useState(true)
   const [sauna, setSauna] = useState(15)
   const [hour, setHour] = useState(7)
   const [saving, setSaving] = useState(false)
@@ -26,9 +29,11 @@ export default function Onboarding({ onDone }: { onDone: () => void }) {
       notifyHour: hour,
       programStart: today(),
       createdAt: new Date().toISOString(),
+      equipment: hasSaunaAccess ? [...DEFAULT_EQUIPMENT] : DEFAULT_EQUIPMENT.filter((e) => e !== 'sauna'),
     }
     await db.profile.put(profile)
     await db.metrics.add({ date: today(), weight: Number(weight) })
+    await loadLibrary()
     await ensureSchedule(profile)
     onDone()
   }
@@ -74,9 +79,18 @@ export default function Onboarding({ onDone }: { onDone: () => void }) {
             </div>
           </div>
           <div className="field">
-            <label>Sauna session length: {sauna} min</label>
-            <input type="range" min={10} max={30} step={5} value={sauna} onChange={(e) => setSauna(Number(e.target.value))} style={{ width: '100%' }} />
+            <label>Do you have access to a dry sauna?</label>
+            <div className="seg">
+              <button className={hasSaunaAccess ? 'on' : ''} onClick={() => setHasSaunaAccess(true)}>Yes</button>
+              <button className={!hasSaunaAccess ? 'on' : ''} onClick={() => setHasSaunaAccess(false)}>No</button>
+            </div>
           </div>
+          {hasSaunaAccess && (
+            <div className="field">
+              <label>Sauna session length: {sauna} min</label>
+              <input type="range" min={10} max={30} step={5} value={sauna} onChange={(e) => setSauna(Number(e.target.value))} style={{ width: '100%' }} />
+            </div>
+          )}
           <div className="field">
             <label>Preferred workout reminder time</label>
             <select className="input" value={hour} onChange={(e) => setHour(Number(e.target.value))}>

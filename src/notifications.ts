@@ -1,4 +1,5 @@
 import { VAPID_PUBLIC_KEY } from './config'
+import { hasSauna } from './data/library'
 import { getRange } from './engine/scheduler'
 import { addDays, today } from './db'
 import type { Profile } from './types'
@@ -67,7 +68,7 @@ export async function buildICS(profile: Profile): Promise<string> {
   for (const d of days) {
     if (d.templateKey === 'rest' || d.status !== 'pending') continue
     const dt = d.date.replace(/-/g, '')
-    const summary = d.sauna ? `${d.title} + Sauna` : d.title
+    const summary = d.sauna && hasSauna() ? `${d.title} + Sauna` : d.title
     lines.push(
       'BEGIN:VEVENT',
       `UID:forge-${d.date}@forge.local`,

@@ -146,7 +146,7 @@ export default function EquipmentManager({
             <div className="field">
               <label>Equipment it needs (from your gear)</label>
               <div className="equip-grid">
-                {selected.map((eq) => (
+                {selected.filter((eq) => eq !== 'sauna').map((eq) => (
                   <button
                     key={eq}
                     className={`equip-item ${gear.includes(eq) ? 'on' : ''}`}

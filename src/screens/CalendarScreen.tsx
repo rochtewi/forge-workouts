@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { db, isoDate, today } from '../db'
+import { hasSauna } from '../data/library'
 import { getRange, placeCustomWorkout } from '../engine/scheduler'
 import { useToast } from '../components/useToast'
 import type { CustomWorkout, ScheduledDay } from '../types'
@@ -115,7 +116,7 @@ export default function CalendarScreen() {
             {sel.status === 'skipped' && <span className="pill pill-red">Skipped</span>}
             {sel.status === 'pending' && <span className="pill pill-dim">{sel.custom ? 'Custom' : 'Planned'}</span>}
           </div>
-          {sel.sauna && <div className="tiny" style={{ marginTop: 6 }}>🔥 Sauna day{sel.saunaDone ? ' — done' : ''}</div>}
+          {sel.sauna && hasSauna() && <div className="tiny" style={{ marginTop: 6 }}>🔥 Sauna day{sel.saunaDone ? ' — done' : ''}</div>}
           {sel.deload && <div className="tiny" style={{ marginTop: 4 }}>😴 Deload — lighter targets this week</div>}
           {sel.blocks.length > 0 && (
             <>

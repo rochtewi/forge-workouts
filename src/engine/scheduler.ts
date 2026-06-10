@@ -1,6 +1,6 @@
 import { db, addDays, getMeta, setMeta, today } from '../db'
 import { templateForIndex, WEEK_TEMPLATE, type DayTemplate } from './program'
-import { defFor } from '../data/library'
+import { defFor, hasSauna } from '../data/library'
 import { advance, buildSets, freshState } from './progression'
 import type { CustomWorkout, Profile, ScheduledDay, WorkoutBlock } from '../types'
 
@@ -44,7 +44,7 @@ async function materializeDay(date: string, template: DayTemplate, deload: boole
     title: deload && template.key !== 'rest' ? `${template.title} · Deload` : template.title,
     focus: deload && template.key !== 'rest' ? `${template.focus} — lighter week, recover hard` : template.focus,
     status: 'pending',
-    sauna: template.sauna,
+    sauna: template.sauna && hasSauna(),
     saunaDone: false,
     blocks,
     deload: deload && template.key !== 'rest' ? true : undefined,

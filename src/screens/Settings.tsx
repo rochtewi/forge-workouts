@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { db } from '../db'
 import { buildICS, currentSubscription, downloadICS, isStandalone, pushSupported, subscribeToPush } from '../notifications'
 import { useToast } from '../components/useToast'
+import { hasSauna } from '../data/library'
 import EquipmentManager from '../components/EquipmentManager'
 import WorkoutManager from '../components/WorkoutManager'
 import type { Profile } from '../types'
@@ -82,10 +83,12 @@ export default function SettingsScreen({ profile, onProfileChange }: { profile: 
           </div>
           <p className="tiny" style={{ marginTop: 6 }}>Applies to newly scheduled weeks.</p>
         </div>
-        <div className="field">
-          <label>Sauna session: {sauna} min</label>
-          <input type="range" min={10} max={30} step={5} value={sauna} onChange={(e) => setSauna(Number(e.target.value))} style={{ width: '100%' }} />
-        </div>
+        {hasSauna() && (
+          <div className="field">
+            <label>Sauna session: {sauna} min</label>
+            <input type="range" min={10} max={30} step={5} value={sauna} onChange={(e) => setSauna(Number(e.target.value))} style={{ width: '100%' }} />
+          </div>
+        )}
         <div className="field">
           <label>Reminder time (used for calendar export)</label>
           <select className="input" value={hour} onChange={(e) => setHour(Number(e.target.value))}>

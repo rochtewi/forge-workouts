@@ -45,6 +45,13 @@ class ForgeDB extends Dexie {
           if (!p.equipment) p.equipment = [...DEFAULT_EQUIPMENT]
         })
       })
+    this.version(3).upgrade(async (tx) => {
+      // Sauna became an equipment item; installs from before had sauna
+      // features unconditionally, so keep that behavior for them.
+      await tx.table('profile').toCollection().modify((p: Profile) => {
+        if (p.equipment && !p.equipment.includes('sauna')) p.equipment.push('sauna')
+      })
+    })
   }
 }
 

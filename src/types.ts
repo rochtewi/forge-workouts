@@ -60,6 +60,7 @@ export type Equipment =
   | 'sled'
   | 'jump-rope'
   | 'medicine-ball'
+  | 'sauna'
 
 export type ExerciseKind = 'weighted' | 'bodyweight' | 'timed' | 'intervals' | 'activity'
 export type ActivityUnit = 'miles' | 'minutes'
