@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { db } from '../db'
 import { buildICS, currentSubscription, downloadICS, isStandalone, pushSupported, subscribeToPush } from '../notifications'
 import { useToast } from '../components/useToast'
+import { downloadBackup, exportBackup, importBackup } from '../backup'
 import { hasSauna } from '../data/library'
 import EquipmentManager from '../components/EquipmentManager'
 import WorkoutManager from '../components/WorkoutManager'
@@ -16,6 +17,8 @@ export default function SettingsScreen({ profile, onProfileChange }: { profile: 
   const [sub, setSub] = useState<string | null>(null)
   const [busy, setBusy] = useState(false)
   const [confirmReset, setConfirmReset] = useState(false)
+  const [restoreText, setRestoreText] = useState('')
+  const [showRestore, setShowRestore] = useState(false)
   const [toast, showToast] = useToast()
 
   useEffect(() => {
@@ -56,6 +59,25 @@ export default function SettingsScreen({ profile, onProfileChange }: { profile: 
   async function resetAll() {
     await db.delete()
     window.location.reload()
+  }
+
+  async function onExportFile() {
+    downloadBackup(await exportBackup())
+    showToast('Backup file saved')
+  }
+
+  async function onExportCopy() {
+    await navigator.clipboard.writeText(await exportBackup())
+    showToast('Backup copied — paste it somewhere safe')
+  }
+
+  async function onRestore() {
+    try {
+      await importBackup(restoreText)
+      window.location.reload()
+    } catch (e) {
+      showToast(e instanceof Error ? e.message : 'Restore failed')
+    }
   }
 
   return (
@@ -145,6 +167,40 @@ export default function SettingsScreen({ profile, onProfileChange }: { profile: 
           Calendar — works with zero internet.
         </p>
         <button className="btn btn-secondary" onClick={exportCal}>Export 4-week calendar (.ics)</button>
+      </div>
+
+      <div className="card">
+        <div style={{ fontWeight: 800, marginBottom: 6 }}>Backup & restore</div>
+        <p className="tiny" style={{ marginBottom: 10 }}>
+          Your data lives only on this device. Export a backup before switching phones or
+          reinstalling — restoring it brings everything back exactly as it was.
+        </p>
+        <div className="btn-row">
+          <button className="btn btn-secondary" onClick={onExportFile}>Save backup file</button>
+          <button className="btn btn-secondary" onClick={onExportCopy}>Copy backup</button>
+        </div>
+        {!showRestore ? (
+          <button className="btn btn-ghost" style={{ marginTop: 10 }} onClick={() => setShowRestore(true)}>
+            Restore from a backup…
+          </button>
+        ) : (
+          <div style={{ marginTop: 10 }}>
+            <textarea
+              className="input"
+              style={{ minHeight: 90, fontFamily: 'ui-monospace, monospace', fontSize: 11 }}
+              placeholder="Paste your backup here"
+              value={restoreText}
+              onChange={(e) => setRestoreText(e.target.value)}
+            />
+            <p className="tiny" style={{ margin: '8px 0' }}>
+              Restoring replaces everything currently on this device.
+            </p>
+            <div className="btn-row">
+              <button className="btn btn-secondary" onClick={() => setShowRestore(false)}>Cancel</button>
+              <button className="btn btn-primary" disabled={!restoreText.trim()} onClick={onRestore}>Restore</button>
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="card">
