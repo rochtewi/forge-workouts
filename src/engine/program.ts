@@ -24,6 +24,7 @@ export const WEEK_TEMPLATE: DayTemplate[] = [
       { id: 'incline-bench', sets: 3 },
       { id: 'dips', sets: 3 },
       { id: 'skull-crushers', sets: 3 },
+      { id: 'bicycles', sets: 3 },
     ],
   },
   {
@@ -36,6 +37,7 @@ export const WEEK_TEMPLATE: DayTemplate[] = [
       { id: 'bb-row', sets: 4 },
       { id: 'ez-curl', sets: 3 },
       { id: 'hanging-knee-raise', sets: 3 },
+      { id: 'mason-twist', sets: 3 },
     ],
   },
   {
@@ -48,6 +50,7 @@ export const WEEK_TEMPLATE: DayTemplate[] = [
       { id: 'reverse-lunge', sets: 3 },
       { id: 'hip-thrust', sets: 3 },
       { id: 'calf-raise', sets: 3 },
+      { id: 'weighted-situp', sets: 3 },
     ],
   },
   {
@@ -59,6 +62,7 @@ export const WEEK_TEMPLATE: DayTemplate[] = [
       { id: 'hill-sprints', sets: 1 },
       { id: 'plank', sets: 3 },
       { id: 'hanging-leg-raise', sets: 3 },
+      { id: 'oblique-v-ups', sets: 3 },
     ],
   },
   {
@@ -71,6 +75,7 @@ export const WEEK_TEMPLATE: DayTemplate[] = [
       { id: 'ohp', sets: 3 },
       { id: 'close-grip-bench', sets: 3 },
       { id: 'dips', sets: 2 },
+      { id: 'v-ups', sets: 3 },
     ],
   },
   {
@@ -83,6 +88,7 @@ export const WEEK_TEMPLATE: DayTemplate[] = [
       { id: 'pendlay-row', sets: 3 },
       { id: 'chinups', sets: 3 },
       { id: 'bb-curl', sets: 3 },
+      { id: 'plate-russian-twist', sets: 3 },
     ],
   },
   {

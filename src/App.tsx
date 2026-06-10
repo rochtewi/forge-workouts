@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { db, seedPresets } from './db'
 import { loadLibrary } from './data/library'
-import { ensureSchedule } from './engine/scheduler'
+import { ensureSchedule, migrateTemplates } from './engine/scheduler'
 import type { Profile } from './types'
 import Onboarding from './screens/Onboarding'
 import TodayScreen from './screens/Today'
@@ -29,6 +29,7 @@ export default function App() {
     const p = await db.profile.get('me')
     if (p) {
       await ensureSchedule(p)
+      await migrateTemplates()
       setProfile(p)
     } else {
       setProfile(null)

@@ -1,5 +1,5 @@
 import { db, addDays, getMeta, setMeta, today } from '../db'
-import { templateForIndex, type DayTemplate } from './program'
+import { templateForIndex, WEEK_TEMPLATE, type DayTemplate } from './program'
 import { defFor } from '../data/library'
 import { advance, buildSets, freshState } from './progression'
 import type { CustomWorkout, Profile, ScheduledDay, WorkoutBlock } from '../types'
@@ -75,6 +75,31 @@ export async function ensureSchedule(profile: Profile): Promise<void> {
     await db.schedule.bulkAdd(rows)
     await setMeta('programCursor', String(cursor))
   }
+}
+
+/**
+ * When an app update changes the weekly template (new exercises in the
+ * program), rebuild pending untouched days so the change shows up this week
+ * instead of after the 4-week horizon rolls over.
+ */
+const TEMPLATE_VERSION = '2'
+
+export async function migrateTemplates(): Promise<void> {
+  const v = await getMeta('templateVersion')
+  if (v === TEMPLATE_VERSION) return
+  const upcoming = await db.schedule.where('date').aboveOrEqual(today()).toArray()
+  for (const d of upcoming) {
+    if (d.status !== 'pending' || d.custom || d.templateKey === 'rest') continue
+    const untouched = d.blocks.every(
+      (b) => b.status === 'pending' && b.sets.every((s) => !s.done && s.actualReps == null && s.actualWeight == null),
+    )
+    if (!untouched) continue
+    const template = WEEK_TEMPLATE.find((t) => t.key === d.templateKey)
+    if (!template) continue
+    const fresh = await materializeDay(d.date, template, !!d.deload)
+    await db.schedule.update(d.id!, { blocks: fresh.blocks, focus: fresh.focus })
+  }
+  await setMeta('templateVersion', TEMPLATE_VERSION)
 }
 
 /**

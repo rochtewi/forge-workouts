@@ -125,12 +125,44 @@ export const EXERCISES: ExerciseDef[] = [
   { id: 'band-curl', name: 'Banded Curl', pattern: 'arms', kind: 'bodyweight', equipment: ['bands'], repRange: [15, 25], bwFactor: 0.15 },
   { id: 'cable-pushdown', name: 'Cable Pushdown', pattern: 'arms', kind: 'weighted', equipment: ['cable'], repRange: [10, 15], startWeight: 40, increment: 10 },
 
-  // ---- Core ----
+  // ---- Core: hanging / bar ----
   { id: 'hanging-knee-raise', name: 'Hanging Knee Raise', pattern: 'core', kind: 'bodyweight', equipment: ['pullup-bar'], repRange: [10, 15], bwFactor: 0.3, cue: 'No swing — curl the hips up.' },
   { id: 'hanging-leg-raise', name: 'Hanging Leg Raise', pattern: 'core', kind: 'bodyweight', equipment: ['pullup-bar'], repRange: [8, 12], bwFactor: 0.35, cue: 'Straight legs to parallel or higher.' },
+  { id: 'hanging-oblique-raise', name: 'Hanging Oblique Knee Raise', pattern: 'core', kind: 'bodyweight', equipment: ['pullup-bar'], repRange: [8, 12], bwFactor: 0.3, cue: 'Per side. Knees up and toward one elbow — pure obliques.' },
+  { id: 'toes-to-bar', name: 'Toes to Bar', pattern: 'core', kind: 'bodyweight', equipment: ['pullup-bar'], repRange: [6, 12], bwFactor: 0.4, cue: 'Lat-press the bar down as the toes come up.' },
+  { id: 'windshield-wipers', name: 'Windshield Wipers (hanging)', pattern: 'core', kind: 'bodyweight', equipment: ['pullup-bar'], repRange: [6, 10], bwFactor: 0.4, cue: 'Legs up, sweep side to side under control. Advanced obliques.' },
+  { id: 'l-sit', name: 'L-Sit on Dip Bars', pattern: 'core', kind: 'timed', equipment: ['dip-bars'], seconds: 20, met: 4, cue: 'Shoulders down, legs straight out. Bend knees to scale.' },
+  { id: 'bench-leg-raise', name: 'Bench Leg Raise', pattern: 'core', kind: 'bodyweight', equipment: ['bench'], repRange: [12, 20], bwFactor: 0.3, cue: 'Lying on the bench, hands gripping behind your head.' },
+
+  // ---- Core: mat (Ab-Ripper style) ----
+  { id: 'situps', name: 'Sit-Ups', pattern: 'core', kind: 'bodyweight', equipment: ['bodyweight'], repRange: [15, 30], bwFactor: 0.25 },
+  { id: 'in-outs', name: 'In & Outs', pattern: 'core', kind: 'bodyweight', equipment: ['bodyweight'], repRange: [15, 25], bwFactor: 0.25, cue: 'Seated, hands behind you — knees to chest, then extend.' },
+  { id: 'bicycles', name: 'Seated Bicycles', pattern: 'core', kind: 'bodyweight', equipment: ['bodyweight'], repRange: [20, 40], bwFactor: 0.2, cue: 'Total pedal counts. Run them forward, then reverse.' },
+  { id: 'crunchy-frog', name: 'Crunchy Frog', pattern: 'core', kind: 'bodyweight', equipment: ['bodyweight'], repRange: [15, 25], bwFactor: 0.25, cue: 'In & out with arms wrapping the knees each rep.' },
+  { id: 'wide-leg-situps', name: 'Wide-Leg Sit-Ups', pattern: 'core', kind: 'bodyweight', equipment: ['bodyweight'], repRange: [15, 25], bwFactor: 0.3, cue: 'Legs wide, reach up and over to alternating sides.' },
+  { id: 'fifer-scissors', name: 'Fifer Scissors', pattern: 'core', kind: 'bodyweight', equipment: ['bodyweight'], repRange: [15, 25], bwFactor: 0.2, cue: 'One leg up, one hovering — switch slowly, lower back glued down.' },
+  { id: 'hip-rock-raise', name: 'Hip Rock & Raise', pattern: 'core', kind: 'bodyweight', equipment: ['bodyweight'], repRange: [15, 25], bwFactor: 0.25, cue: 'Soles together, rock back and drive the hips to the sky.' },
+  { id: 'pulse-ups', name: 'Pulse-Ups (Heels to Heaven)', pattern: 'core', kind: 'bodyweight', equipment: ['bodyweight'], repRange: [15, 25], bwFactor: 0.25, cue: 'Legs vertical, punch the heels straight up — small, strict pulses.' },
+  { id: 'v-ups', name: 'V-Up / Roll-Up Combo', pattern: 'core', kind: 'bodyweight', equipment: ['bodyweight'], repRange: [10, 20], bwFactor: 0.3, cue: 'Alternate a full V-up with a slow roll-up.' },
+  { id: 'oblique-v-ups', name: 'Oblique V-Ups', pattern: 'core', kind: 'bodyweight', equipment: ['bodyweight'], repRange: [10, 15], bwFactor: 0.25, cue: 'Per side. On your side, fold elbow to knees.' },
+  { id: 'leg-climbs', name: 'Leg Climbs', pattern: 'core', kind: 'bodyweight', equipment: ['bodyweight'], repRange: [8, 12], bwFactor: 0.3, cue: 'Per side. Climb hand-over-hand up the raised leg.' },
+  { id: 'mason-twist', name: 'Mason Twist (Russian Twist)', pattern: 'core', kind: 'bodyweight', equipment: ['bodyweight'], repRange: [20, 40], bwFactor: 0.15, cue: 'Feet off the floor, knuckles tap the ground each side.' },
+  { id: 'reverse-crunch', name: 'Reverse Crunch', pattern: 'core', kind: 'bodyweight', equipment: ['bodyweight'], repRange: [15, 25], bwFactor: 0.25, cue: 'Curl the hips off the floor — no leg swing.' },
+  { id: 'flutter-kicks', name: 'Flutter Kicks', pattern: 'core', kind: 'bodyweight', equipment: ['bodyweight'], repRange: [20, 40], bwFactor: 0.15, cue: 'Total counts. Low, fast, lower back pressed down.' },
+  { id: 'dead-bug', name: 'Dead Bug', pattern: 'core', kind: 'bodyweight', equipment: ['bodyweight'], repRange: [10, 16], bwFactor: 0.15, cue: 'Opposite arm and leg lower slowly, ribs down.' },
   { id: 'plank', name: 'Plank', pattern: 'core', kind: 'timed', equipment: ['bodyweight'], seconds: 45, met: 3.5, cue: 'Glutes tight, ribs down.' },
   { id: 'side-plank', name: 'Side Plank', pattern: 'core', kind: 'timed', equipment: ['bodyweight'], seconds: 30, met: 3.5, cue: 'Per side.' },
-  { id: 'situps', name: 'Sit-Ups', pattern: 'core', kind: 'bodyweight', equipment: ['bodyweight'], repRange: [15, 30], bwFactor: 0.25 },
+  { id: 'side-plank-dips', name: 'Side Plank Hip Dips', pattern: 'core', kind: 'bodyweight', equipment: ['bodyweight'], repRange: [10, 15], bwFactor: 0.2, cue: 'Per side. Dip the hip to the floor and drive it high.' },
+  { id: 'hollow-hold', name: 'Hollow Body Hold', pattern: 'core', kind: 'timed', equipment: ['bodyweight'], seconds: 30, met: 3.5, cue: 'Lower back welded to the floor, arms and legs long.' },
+
+  // ---- Core: weighted ----
+  { id: 'weighted-situp', name: 'Weighted Sit-Up (plate on chest)', pattern: 'core', kind: 'weighted', equipment: ['plates'], repRange: [10, 15], startWeight: 25, increment: 5, cue: 'Hug the plate high on your chest.' },
+  { id: 'plate-russian-twist', name: 'Plate Russian Twist', pattern: 'core', kind: 'weighted', equipment: ['plates'], repRange: [16, 24], startWeight: 25, increment: 5, cue: 'Total taps. Feet up for extra credit.' },
+  { id: 'weighted-plank', name: 'Weighted Plank (plate on back)', pattern: 'core', kind: 'timed', equipment: ['plates'], seconds: 30, met: 4, cue: 'Have the plate set on your upper back, stay rigid.' },
+  { id: 'plate-side-bend', name: 'Plate Side Bend', pattern: 'core', kind: 'weighted', equipment: ['plates'], repRange: [12, 15], startWeight: 25, increment: 10, cue: 'Per side. Slide down the leg, crush the oblique coming up.' },
+  { id: 'db-side-bend', name: 'Dumbbell Side Bend', pattern: 'core', kind: 'weighted', equipment: ['dumbbells'], repRange: [12, 15], startWeight: 30, increment: 5, cue: 'Per side. One heavy dumbbell, strict.' },
+  { id: 'kb-windmill', name: 'Kettlebell Windmill', pattern: 'core', kind: 'weighted', equipment: ['kettlebell'], repRange: [6, 10], startWeight: 25, increment: 10, cue: 'Per side. Bell locked overhead, eyes on it all the way down.' },
+  { id: 'mb-russian-twist', name: 'Med Ball Russian Twist', pattern: 'core', kind: 'weighted', equipment: ['medicine-ball'], repRange: [20, 30], startWeight: 12, increment: 4 },
   { id: 'mb-slam', name: 'Medicine Ball Slam', pattern: 'core', kind: 'weighted', equipment: ['medicine-ball'], repRange: [10, 15], startWeight: 12, increment: 4, met: 8 },
   { id: 'kb-carry', name: 'Kettlebell Farmer Carry', pattern: 'core', kind: 'timed', equipment: ['kettlebell'], seconds: 45, met: 5, cue: 'Tall posture, crush grip, walk.' },
 

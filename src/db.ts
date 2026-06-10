@@ -50,13 +50,26 @@ class ForgeDB extends Dexie {
 
 export const db = new ForgeDB()
 
-/** Seed preset workouts (Murph etc.) once. Fixed ids + transaction make this idempotent even if called concurrently. */
+/**
+ * Seed preset workouts. Versioned: on upgrades, new presets are added by name
+ * (so updates bring new presets without resurrecting ones the user deleted in
+ * the same version). Transaction makes it safe under concurrent calls.
+ */
+const PRESETS_VERSION = '2'
+
 export async function seedPresets(): Promise<void> {
-  await db.transaction('rw', db.customWorkouts, async () => {
-    const count = await db.customWorkouts.count()
-    if (count === 0) {
+  await db.transaction('rw', [db.customWorkouts, db.meta], async () => {
+    const ver = await db.meta.get('presetsVersion')
+    if (ver?.value === PRESETS_VERSION) return
+    const existing = new Set((await db.customWorkouts.toArray()).map((w) => w.name))
+    if (existing.size === 0) {
       await db.customWorkouts.bulkPut(PRESET_WORKOUTS.map((w, i) => ({ ...w, id: i + 1 }) as CustomWorkout))
+    } else {
+      for (const w of PRESET_WORKOUTS) {
+        if (!existing.has(w.name)) await db.customWorkouts.add(w as CustomWorkout)
+      }
     }
+    await db.meta.put({ key: 'presetsVersion', value: PRESETS_VERSION })
   })
 }
 
