@@ -22,11 +22,18 @@ export function isStandalone(): boolean {
   )
 }
 
+/** The hour/timezone ride along inside the pasted secret so the sender knows
+ *  when this phone wants its morning push. */
+function withSchedule(sub: PushSubscriptionJSON, notifyHour: number): string {
+  return JSON.stringify({ ...sub, hour: notifyHour, tz: Intl.DateTimeFormat().resolvedOptions().timeZone })
+}
+
 /**
  * Ask permission and subscribe. Returns the subscription JSON the user pastes
- * into the GitHub PUSH_SUBSCRIPTION secret so the daily cron can reach this phone.
+ * into the GitHub PUSH_SUBSCRIPTION secret so the hourly cron can reach this
+ * phone at its chosen hour.
  */
-export async function subscribeToPush(): Promise<string> {
+export async function subscribeToPush(notifyHour: number): Promise<string> {
   const permission = await Notification.requestPermission()
   if (permission !== 'granted') throw new Error('Notification permission was not granted.')
   const reg = await navigator.serviceWorker.ready
@@ -37,14 +44,14 @@ export async function subscribeToPush(): Promise<string> {
       userVisibleOnly: true,
       applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY) as BufferSource,
     }))
-  return JSON.stringify(sub.toJSON())
+  return withSchedule(sub.toJSON(), notifyHour)
 }
 
-export async function currentSubscription(): Promise<string | null> {
+export async function currentSubscription(notifyHour: number): Promise<string | null> {
   if (!pushSupported()) return null
   const reg = await navigator.serviceWorker.ready
   const sub = await reg.pushManager.getSubscription()
-  return sub ? JSON.stringify(sub.toJSON()) : null
+  return sub ? withSchedule(sub.toJSON(), notifyHour) : null
 }
 
 function icsEscape(s: string): string {

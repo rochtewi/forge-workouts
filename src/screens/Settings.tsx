@@ -22,8 +22,10 @@ export default function SettingsScreen({ profile, onProfileChange }: { profile: 
   const [toast, showToast] = useToast()
 
   useEffect(() => {
-    currentSubscription().then(setSub).catch(() => setSub(null))
-  }, [])
+    // The hour rides inside the subscription code, so the displayed code
+    // tracks the time picker live.
+    currentSubscription(hour).then(setSub).catch(() => setSub(null))
+  }, [hour])
 
   async function save() {
     await db.profile.update('me', { name: name.trim() || profile.name, unit, daysPerWeek: days, saunaMinutes: sauna, notifyHour: hour })
@@ -34,7 +36,7 @@ export default function SettingsScreen({ profile, onProfileChange }: { profile: 
   async function enablePush() {
     setBusy(true)
     try {
-      const s = await subscribeToPush()
+      const s = await subscribeToPush(hour)
       setSub(s)
       showToast('Notifications enabled on this phone!')
     } catch (e) {
@@ -112,7 +114,7 @@ export default function SettingsScreen({ profile, onProfileChange }: { profile: 
           </div>
         )}
         <div className="field">
-          <label>Reminder time (used for calendar export)</label>
+          <label>Notification time (daily push + calendar export)</label>
           <select className="input" value={hour} onChange={(e) => setHour(Number(e.target.value))}>
             {Array.from({ length: 18 }, (_, i) => i + 4).map((h) => (
               <option key={h} value={h}>{h > 12 ? h - 12 : h}:00 {h >= 12 ? 'PM' : 'AM'}</option>
@@ -150,7 +152,9 @@ export default function SettingsScreen({ profile, onProfileChange }: { profile: 
                 <p className="muted" style={{ marginBottom: 8 }}>
                   Enabled on this phone. Final step: copy this subscription into the
                   <b> PUSH_SUBSCRIPTION</b> secret in the GitHub repository (Settings → Secrets → Actions).
-                  The secret can hold a JSON list — one entry per phone that wants the daily push.
+                  The secret can hold a JSON list — one entry per phone, and each phone gets its push at
+                  its own notification time. If you change the time above, copy this again and update
+                  the secret.
                 </p>
                 <div className="code-box">{sub}</div>
                 <button className="btn btn-secondary" style={{ marginTop: 10 }} onClick={copySub}>

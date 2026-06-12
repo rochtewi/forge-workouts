@@ -48,8 +48,11 @@ Named for basalt: stone forged in fire, cooled into something harder.
 **Multiple phones**: the secret accepts a JSON list — wrap subscriptions in square brackets,
 separated by commas. Each phone gets the daily push; an expired phone never blocks the others.
 
-The send time is set in [.github/workflows/notify.yml](.github/workflows/notify.yml) (cron, UTC).
-Default is 11:00 UTC ≈ 7:00 AM Eastern.
+**Send time**: each subscription carries the notification time picked in the app (Profile →
+Notification time) plus the phone's timezone. The workflow in
+[.github/workflows/notify.yml](.github/workflows/notify.yml) runs hourly and delivers to each
+phone at its own hour. If you change the time in the app, copy the subscription again and update
+the secret. Old entries without a time default to 7:00 AM Eastern.
 
 ## How auto-building works
 

@@ -2,9 +2,15 @@ name: Daily Workout Notification
 
 on:
   schedule:
-    # 11:00 UTC = 7:00 AM EDT (6:00 AM EST). Edit this line to change the time.
-    - cron: '0 11 * * *'
+    # Runs hourly; the sender script delivers to each phone only at the hour
+    # that phone picked in the app (legacy entries default to 7 AM Eastern).
+    - cron: '0 * * * *'
   workflow_dispatch:
+    inputs:
+      force:
+        description: 'Send to every phone now, ignoring their chosen hour (for testing)'
+        type: boolean
+        default: false
 
 permissions: {}
 
@@ -21,3 +27,4 @@ jobs:
         env:
           VAPID_PRIVATE_KEY: ${{ secrets.VAPID_PRIVATE_KEY }}
           PUSH_SUBSCRIPTION: ${{ secrets.PUSH_SUBSCRIPTION }}
+          FORCE: ${{ inputs.force }}
